@@ -4,7 +4,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 import tensorflow as tf
 import numpy as np
-from tensorflow.keras.preprocessing import image
+from keras.utils import load_img, img_to_array
 
 app = Flask(__name__)
 
@@ -20,8 +20,8 @@ def predict_disease(img_path):
         if 'model' not in globals():
             model = tf.keras.models.load_model('plant_disease_model.keras')
 
-        img = image.load_img(img_path, target_size=(224,224))
-        img_array = image.img_to_array(img)
+        img = load_img(img_path, target_size=(224,224))
+        img_array = img_to_array(img)
 
         img_array = np.expand_dims(img_array, axis=0)
         img_array = img_array / 255.0
