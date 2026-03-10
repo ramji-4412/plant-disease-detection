@@ -15,22 +15,26 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
 def predict_disease(img_path):
-    global model
-    if 'model' not in globals():
-        model = tf.keras.models.load_model('plant_disease_model.keras')
+    try:
+        global model
+        if 'model' not in globals():
+            model = tf.keras.models.load_model('plant_disease_model.keras')
 
-    img = image.load_img(img_path, target_size=(224,224))
-    img_array = image.img_to_array(img)
+        img = image.load_img(img_path, target_size=(224,224))
+        img_array = image.img_to_array(img)
 
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array = img_array / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array = img_array / 255.0
 
-    prediction = model.predict(img_array)
+        prediction = model.predict(img_array)
 
-    predicted_class = class_names[np.argmax(prediction)]
-    confidence = np.max(prediction)
+        predicted_class = class_names[np.argmax(prediction)]
+        confidence = np.max(prediction)
 
-    return predicted_class, confidence
+        return predicted_class, confidence
+    except Exception as e:
+        print(f"Error in predict_disease: {e}")
+        return "Error", 0.0
 
 
 @app.route("/")
@@ -47,21 +51,25 @@ def about():
 def upload():
 
     if request.method == "POST":
+        try:
+            file = request.files["file"]
+            if not file:
+                return render_template("result.html", prediction="No file uploaded", confidence=0, image_path=None)
 
-        file = request.files["file"]
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+            file.save(filepath)
 
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
-        file.save(filepath)
+            disease, confidence = predict_disease(filepath)
 
-        disease, confidence = predict_disease(filepath)
-
-        return render_template(
-            "result.html",
-            prediction=disease,
-            confidence=round(confidence*100,2),
-            image_path=filepath
-        )
-
+            return render_template(
+                "result.html",
+                prediction=disease,
+                confidence=round(confidence*100,2),
+                image_path=filepath
+            )
+        except Exception as e:
+            print(f"Error in upload route: {e}")
+            return render_template("result.html", prediction=f"Internal error: {e}", confidence=0, image_path=None)
     return render_template("upload.html")
 
 
