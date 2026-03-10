@@ -1,11 +1,8 @@
 import streamlit as st
-import tensorflow as tf
+import onnxruntime as ort
 import numpy as np
 from PIL import Image
 import os
-
-# Suppress TensorFlow warnings
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 # Class names for predictions
 class_names = [
@@ -24,22 +21,25 @@ class_names = [
     'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus', 'Tomato___healthy'
 ]
 
-# Load model (cached to avoid reloading)
+# Load ONNX model (cached)
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model('plant_disease_model.keras')
+    return ort.InferenceSession('model.onnx')
 
-model = load_model()
+session = load_model()
 
 def predict_disease(img):
     # Preprocess image
     img = img.resize((224, 224))
-    img_array = np.array(img)
+    img_array = np.array(img).astype(np.float32)
     img_array = np.expand_dims(img_array, axis=0)
     img_array = img_array / 255.0
 
-    # Predict
-    prediction = model.predict(img_array)
+    # Run inference
+    inputs = {session.get_inputs()[0].name: img_array}
+    outputs = session.run(None, inputs)
+    prediction = outputs[0]
+
     predicted_class = class_names[np.argmax(prediction)]
     confidence = np.max(prediction) * 100
 
