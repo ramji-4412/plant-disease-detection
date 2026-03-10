@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnose a Leaf — PlantCare AI</title>
+  <meta name="description" content="Upload a leaf photo and get instant AI-powered plant disease detection with confidence scores and treatment advice." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-brand" aria-label="PlantCare AI Home">
+    <div class="nav-logo" aria-hidden="true">🌿</div>
+    <span class="nav-name">PlantCare <span>AI</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/upload" class="active">Diagnose</a></li>
+    <li><a href="/upload" class="nav-cta">Try Free →</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ═══ UPLOAD HERO ═══ -->
+  <div class="upload-hero">
+    <div class="section-label" style="justify-content:center;color:var(--green-300);margin-bottom:.75rem">
+      AI Leaf Analysis
+    </div>
+    <h1>Upload &amp; Diagnose</h1>
+    <p>Take a clear, well-lit photo of the affected leaf. Our AI will return a diagnosis with confidence score and treatment advice in seconds.</p>
+  </div>
+
+  <!-- ═══ UPLOAD AREA ═══ -->
+  <div class="upload-section">
+
+    <!-- Left: Drop Zone + Form -->
+    <div>
+      <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" novalidate>
+
+        <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Upload area. Click or drag a leaf image here.">
+          <div class="drop-icon" aria-hidden="true">📤</div>
+          <h3>Drag &amp; Drop Your Leaf Image</h3>
+          <p>Drop a clear photo of the affected leaf here, or click to browse your files.</p>
+          <div class="or-divider">or</div>
+          <button type="button" class="btn btn-secondary" style="pointer-events:none" aria-hidden="true">
+            📁 Browse Files
+          </button>
+          <div class="file-types" aria-label="Accepted file types">
+            <span class="file-type">JPG</span>
+            <span class="file-type">PNG</span>
+            <span class="file-type">WEBP</span>
+            <span class="file-type">Max 10 MB</span>
+          </div>
+        </div>
+
+        <!-- Hidden real input -->
+        <input type="file" id="fileInput" name="file" accept="image/jpeg,image/jpg,image/png,image/webp" style="display:none" aria-label="File upload input" />
+
+        <!-- Preview -->
+        <div class="preview-wrap" id="previewWrap" aria-live="polite">
+          <img class="preview-img" id="previewImg" src="" alt="Selected leaf image preview" />
+          <button type="button" class="preview-remove" id="removeBtn" aria-label="Remove selected image">✕ Remove</button>
+          <div class="preview-filename" id="previewFileName"></div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" id="submitBtn" disabled aria-label="Analyse the uploaded leaf image">
+          🔬 Analyse Leaf
+        </button>
+
+      </form>
+    </div>
+
+    <!-- Right: Tips + Samples -->
+    <div class="upload-sidebar">
+      <div class="tips-card">
+        <h4>📸 Photo Tips for Best Results</h4>
+        <div class="tip-item">
+          <span class="tip-dot" aria-hidden="true"></span>
+          <p><strong>Single leaf:</strong> Frame one leaf clearly, filling most of the frame.</p>
+        </div>
+        <div class="tip-item">
+          <span class="tip-dot" aria-hidden="true"></span>
+          <p><strong>Good lighting:</strong> Photograph in natural daylight. Avoid harsh shadows or glare.</p>
+        </div>
+        <div class="tip-item">
+          <span class="tip-dot" aria-hidden="true"></span>
+          <p><strong>Show symptoms:</strong> Make sure the discoloured or damaged area is clearly visible.</p>
+        </div>
+        <div class="tip-item">
+          <span class="tip-dot" aria-hidden="true"></span>
+          <p><strong>Clean background:</strong> Shoot against a plain, contrasting surface if possible.</p>
+        </div>
+        <div class="tip-item">
+          <span class="tip-dot" aria-hidden="true"></span>
+          <p><strong>Minimum 224×224 px:</strong> Higher resolution gives more accurate predictions.</p>
+        </div>
+      </div>
+
+      <div class="tips-card sample-gallery">
+        <h4>🌿 Supported Crops</h4>
+        <div class="sample-images" aria-label="Supported crop examples">
+          <div class="sample-thumb" title="Tomato">🍅</div>
+          <div class="sample-thumb" title="Potato">🥔</div>
+          <div class="sample-thumb" title="Corn">🌽</div>
+          <div class="sample-thumb" title="Apple">🍎</div>
+          <div class="sample-thumb" title="Grape">🍇</div>
+          <div class="sample-thumb" title="Pepper">🌶️</div>
+          <div class="sample-thumb" title="Strawberry">🍓</div>
+          <div class="sample-thumb" title="Peach">🍑</div>
+          <div class="sample-thumb" title="More crops">🌱</div>
+        </div>
+        <p style="font-size:.8rem;color:var(--text-light);margin-top:.75rem">14 crop species supported across 38 disease types</p>
+      </div>
+
+      <!-- Mini stats -->
+      <div class="tips-card" style="background: linear-gradient(135deg, var(--green-900), var(--green-700)); border-color: transparent;">
+        <div style="display:flex;justify-content:space-between;text-align:center;">
+          <div>
+            <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:var(--green-300)">95%</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.2rem">Accuracy</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:var(--green-300)">2.3s</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.2rem">Avg Speed</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:var(--green-300)">Free</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.2rem">Always</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo" aria-hidden="true">🌿</div>
+      <span class="footer-name">PlantCare <span>AI</span></span>
+    </div>
+    <nav class="footer-links" aria-label="Footer links">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/upload">Diagnose</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 PlantCare AI. All rights reserved.</span>
+    <span>Built with 🌿 for sustainable agriculture</span>
+  </div>
+</footer>
+
+<!-- ═══ LOADING SPINNER ═══ -->
+<div class="spinner-overlay" id="spinnerOverlay" role="status" aria-live="polite" aria-label="Analysing your leaf image">
+  <div class="spinner-wrap" aria-hidden="true">
+    <div class="spinner"></div>
+    <div class="spinner-inner"></div>
+  </div>
+  <p class="spinner-text">Analysing your leaf…</p>
+  <div class="progress-wrap" aria-hidden="true">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="spinner-steps" aria-hidden="true">
+    <div class="spinner-step active" id="step1">📥 Loading image</div>
+    <div class="spinner-step"        id="step2">🔧 Pre-processing</div>
+    <div class="spinner-step"        id="step3">🧠 Running AI model</div>
+    <div class="spinner-step"        id="step4">📋 Generating report</div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

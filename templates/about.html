@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — PlantCare AI</title>
+  <meta name="description" content="Learn about the PlantCare AI team, mission, technology stack and the research behind our plant disease detection system." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-brand" aria-label="PlantCare AI Home">
+    <div class="nav-logo" aria-hidden="true">🌿</div>
+    <span class="nav-name">PlantCare <span>AI</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about" class="active">About</a></li>
+    <li><a href="/upload">Diagnose</a></li>
+    <li><a href="/upload" class="nav-cta">Try Free →</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ═══ ABOUT HERO ═══ -->
+  <div class="about-hero">
+    <div class="hero-badge" style="position:relative;">🌱 Our Story</div>
+    <h1>Helping Farmers Grow<br>Smarter with AI</h1>
+    <p>PlantCare AI was built by a small team of ML engineers and agricultural scientists who believe that precision technology should be accessible to every farmer — regardless of scale or resources.</p>
+  </div>
+
+  <!-- ═══ STATS ═══ -->
+  <section style="padding: 4rem 5vw;">
+    <div class="stats-showcase reveal">
+      <div class="showcase-stat">
+        <div class="showcase-num">95<span style="font-size:1.4rem">%</span></div>
+        <div class="showcase-label">Detection Accuracy</div>
+      </div>
+      <div class="showcase-stat">
+        <div class="showcase-num">38</div>
+        <div class="showcase-label">Disease Classes</div>
+      </div>
+      <div class="showcase-stat">
+        <div class="showcase-num">87K<span style="font-size:1.4rem">+</span></div>
+        <div class="showcase-label">Training Images</div>
+      </div>
+      <div class="showcase-stat">
+        <div class="showcase-num">14</div>
+        <div class="showcase-label">Crop Species</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MISSION ═══ -->
+  <section aria-labelledby="mission-heading">
+    <div class="mission-grid">
+      <div class="mission-img reveal" role="img" aria-label="Leaf illustration">
+        <span style="font-size:7rem;position:relative;z-index:1">🌿</span>
+      </div>
+      <div>
+        <div class="section-label">Our Mission</div>
+        <h2 class="section-title" id="mission-heading">Technology in Every Field</h2>
+        <p class="section-sub" style="margin-bottom:1.5rem">
+          Crop diseases cause 40% of global food production losses every year. Early detection is the single most effective intervention — but traditional methods require expensive lab tests and expert knowledge most farmers can't access.
+        </p>
+        <p style="color:var(--text-mid);line-height:1.7;margin-bottom:1.5rem">
+          PlantCare AI democratises that expertise. By packaging a state-of-the-art convolutional neural network into a simple web interface, any farmer with a smartphone can get a professional-grade diagnosis in under 3 seconds — for free.
+        </p>
+        <a href="/upload" class="btn btn-primary">Try It Now →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TECHNOLOGY ═══ -->
+  <section style="background: var(--green-50);" aria-labelledby="tech-heading">
+    <div class="section-header centered">
+      <div class="section-label">Under the Hood</div>
+      <h2 class="section-title" id="tech-heading">Our Technology Stack</h2>
+      <p class="section-sub">Built with robust, production-grade tools designed for speed, accuracy and scalability.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-item reveal">
+        <div class="icon">🧠</div>
+        <h4>TensorFlow / Keras</h4>
+        <p>Model training and inference</p>
+      </div>
+      <div class="tech-item reveal">
+        <div class="icon">📐</div>
+        <h4>EfficientNet-B4</h4>
+        <p>CNN backbone architecture</p>
+      </div>
+      <div class="tech-item reveal">
+        <div class="icon">🐍</div>
+        <h4>Python &amp; Flask</h4>
+        <p>Backend web framework</p>
+      </div>
+      <div class="tech-item reveal">
+        <div class="icon">🖼️</div>
+        <h4>OpenCV &amp; Pillow</h4>
+        <p>Image pre-processing</p>
+      </div>
+      <div class="tech-item reveal">
+        <div class="icon">📊</div>
+        <h4>NumPy &amp; Pandas</h4>
+        <p>Data pipeline &amp; analysis</p>
+      </div>
+      <div class="tech-item reveal">
+        <div class="icon">🌐</div>
+        <h4>HTML5 / CSS3 / JS</h4>
+        <p>Responsive frontend</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DATASET ═══ -->
+  <section aria-labelledby="dataset-heading">
+    <div class="section-header">
+      <div class="section-label">Dataset</div>
+      <h2 class="section-title" id="dataset-heading">Trained on PlantVillage</h2>
+      <p class="section-sub">Our model was trained and validated on the industry-standard PlantVillage dataset, curated by researchers at Penn State University.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">📁</div>
+        <h3>87,000+ Images</h3>
+        <p>High-resolution leaf photographs taken under controlled and real-field conditions across all 38 disease and healthy categories.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔄</div>
+        <h3>Data Augmentation</h3>
+        <p>Each image was augmented with random flips, rotations, brightness shifts and cropping to improve model generalisation.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">✅</div>
+        <h3>Expert Validation</h3>
+        <p>All disease annotations were verified by certified plant pathologists to ensure label quality and diagnostic accuracy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TEAM ═══ -->
+  <section style="background: var(--green-50);" aria-labelledby="team-heading">
+    <div class="section-header centered">
+      <div class="section-label">The Team</div>
+      <h2 class="section-title" id="team-heading">People Behind PlantCare AI</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">👨‍💻</div>
+        <h3>Raghav Pathak</h3>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">👩‍🌾</div>
+        <h3>Rahul Yadav</h3>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">🧑‍🎨</div>
+        <h3>Ram</h3>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">👩‍💼</div>
+        <h3>Ram Ji Trivedi</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-strip">
+    <div class="cta-box reveal">
+      <h2>Ready to Diagnose?</h2>
+      <p>Experience the power of AI-driven plant pathology detection — free, fast and accurate.</p>
+      <a href="/upload" class="btn btn-light">🌿 Upload a Leaf Now</a>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo" aria-hidden="true">🌿</div>
+      <span class="footer-name">PlantCare <span>AI</span></span>
+    </div>
+    <nav class="footer-links" aria-label="Footer links">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/upload">Diagnose</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 PlantCare AI. All rights reserved.</span>
+    <span>Built with 🌿 for sustainable agriculture</span>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
