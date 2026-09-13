@@ -21,3 +21,9 @@ static/uploads/
 # OS
 .DS_Store
 Thumbs.db
+
+# API Keys & Credentials
+kaggle.json
+
+# Temporary files
+nul

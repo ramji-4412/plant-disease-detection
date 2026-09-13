@@ -14,26 +14,63 @@ UPLOAD_FOLDER = "static/uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
+def softmax(x):
+    """Compute softmax values for each set of scores in x."""
+    e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
+    return e_x / np.sum(e_x, axis=-1, keepdims=True)
+
 def predict_disease(img_path):
     try:
         global model
         if 'model' not in globals():
             model = tf.keras.models.load_model('plant_disease_model.keras')
 
-        img = load_img(img_path, target_size=(224,224))
+        # Load and preprocess image
+        img = load_img(img_path, target_size=(224, 224))
         img_array = img_to_array(img)
-
+        
+        # Expand dimensions and normalize
         img_array = np.expand_dims(img_array, axis=0)
         img_array = img_array / 255.0
 
-        prediction = model.predict(img_array)
-
-        predicted_class = class_names[np.argmax(prediction)]
+        # Get prediction
+        prediction = model.predict(img_array, verbose=0)
+        
+        # Ensure prediction is a numpy array
+        prediction = np.array(prediction).flatten()
+        
+        # Check if prediction values are valid
+        if np.sum(prediction) == 0 or np.any(np.isnan(prediction)):
+            print(f"Warning: Invalid prediction values. Sum: {np.sum(prediction)}")
+            # Apply softmax to convert logits to probabilities
+            prediction = softmax(prediction)
+        
+        # If confidence is still 0 or very low, try applying softmax
+        raw_confidence = np.max(prediction)
+        if raw_confidence == 0 or raw_confidence > 1.0 or abs(np.sum(prediction) - 1.0) > 0.01:
+            print(f"Warning: Raw confidence {raw_confidence:.6f} or sum {np.sum(prediction):.6f} is unusual. Applying softmax.")
+            prediction = softmax(prediction)
+        
+        # Get predicted class and confidence
+        predicted_idx = np.argmax(prediction)
         confidence = np.max(prediction)
-
-        return predicted_class, confidence
+        
+        # Validate index is within bounds
+        if predicted_idx >= len(class_names):
+            print(f"Warning: Predicted index {predicted_idx} out of range for {len(class_names)} classes")
+            return "Unknown", 0.0
+        
+        predicted_class = class_names[predicted_idx]
+        
+        # Debug output
+        print(f"Prediction: {predicted_class}, Confidence: {confidence:.4f}")
+        
+        return predicted_class, float(confidence)
+        
     except Exception as e:
         print(f"Error in predict_disease: {e}")
+        import traceback
+        traceback.print_exc()
         return "Error", 0.0
 
 
