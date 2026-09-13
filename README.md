@@ -1,3 +1,12 @@
+---
+title: Plant Disease Detection
+emoji: 🌿
+colorFrom: green
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 # 🌿 Plant Disease Detection using Deep Learning
 
 AI-powered web application that detects plant leaf diseases from images using a trained deep learning model.
